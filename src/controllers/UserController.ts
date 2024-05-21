@@ -33,7 +33,7 @@ class UserController {
         }
     }
 
-    public async update(req: Request, res: Response): Promise<void> {
+    public async updatemail(req: Request, res: Response): Promise<void> {
         const { id, mail } = req.body;
         try {
             const response = await User.findByIdAndUpdate(
@@ -56,6 +56,34 @@ class UserController {
             }
             else if (e.errors?.mail) {
                 res.send({ message: e.errors.mail.message });
+            }
+            else {
+                res.send({ message: e });
+            }
+        }
+    }
+
+    public async updasenha(req: Request, res: Response): Promise<void> {
+        const { id, password } = req.body;
+        try {
+            const response = await User.findByIdAndUpdate(
+                id,
+                { password },
+                {
+                    new: true,
+                    runValidators: true
+                }
+            );
+            if (response) {
+                res.json(response);
+            }
+            else {
+                res.json({ message: "Registro inexistente" });
+            }
+        } catch (e: any) {
+           
+            if (e.errors?.mail) {
+                res.send({ message: e.errors.password.message });
             }
             else {
                 res.send({ message: e });

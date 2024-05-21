@@ -6,6 +6,7 @@ const router = Router();
 router.get("/",controller.list);
 router.post("/", controller.create);
 router.delete("/",controller.delete);
-router.put("/",controller.update)
+router.put("/mail",controller.updatemail)
+router.put("/senha",controller.updasenha)
 
 export default router
