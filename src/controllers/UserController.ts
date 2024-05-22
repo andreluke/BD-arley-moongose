@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import jwt from "jsonwebtoken";
 
 class UserController {
     public async create(req: Request, res: Response): Promise<void> {
