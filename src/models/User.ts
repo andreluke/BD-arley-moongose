@@ -16,6 +16,11 @@ const UserSchema = new Schema({
             message: (props:any) => `${props.value} não é um formato de e-mail válido`,
     }
 },
+status:{
+    type: String,
+    enum: ["user", "adm"],
+    default: "user"
+},
     password: {
         type: String, 
         minlength: 6, 

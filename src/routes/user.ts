@@ -1,12 +1,13 @@
 import { Router } from "express";
 import controller from "../controllers/UserController";
+import { checkAdm, validadeAcess } from "../middlewares/Auth";
 
 const router = Router();
 
-router.get("/",controller.list);
+router.get("/", validadeAcess, checkAdm, controller.list);
 router.post("/", controller.create);
-router.delete("/",controller.delete);
-router.put("/mail",controller.updatemail)
-router.put("/senha",controller.updasenha)
+router.delete("/", validadeAcess, controller.delete);
+router.put("/mail", validadeAcess, controller.updatemail);
+router.put("/senha", validadeAcess, controller.updasenha);
 
 export default router

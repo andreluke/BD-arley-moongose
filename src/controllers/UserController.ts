@@ -4,14 +4,40 @@ import jwt from "jsonwebtoken";
 
 class UserController {
     public async create(req: Request, res: Response): Promise<void> {
-        const { mail, password } = req.body;
+        const { mail, password, profile } = req.body;
+        if (!mail && !password) {
+            res.status(401).json({ erro: "Forneça o e-mail e senha" });
+        }else{
         try {
-            const response = await User.create({ mail, password });
+            const response = await User.create({ mail, password, profile });
             res.send(response);
         } catch (e: any) {
                 res.send({ message: e });
             }
         }
+    }
+
+    public async login(req: Request, res: Response) {
+        const { mail, password } = req.body;
+
+        
+
+        const user = await User.findOne({
+            mail
+        });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Email não encontrado.' });
+        }
+        console.log("Email", user);
+       
+        if (!password) {
+            return res.status(401).json({ message: 'Senha incorreta.' });
+        }
+
+        const token = jwt.sign({ userId: user._id }, 'token', { expiresIn: '1h' });
+        res.status(200).json({ message: 'Logado com sucesso.', user, token })
+    }
 
     public async list(_: Request, res: Response): Promise<void> {
         res.send(await User.find(
