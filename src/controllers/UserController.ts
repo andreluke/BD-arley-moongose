@@ -1,15 +1,35 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
+import { tokenize } from "../middlewares/Auth";
 
 class UserController {
+    public async login(req: Request, res: Response): Promise<void> {
+      const { mail, password } = req.body;
+  
+      if (!mail || !password) {
+        res.status(401).json({ erro: "Forneça o e-mail e senha" });
+      } else {
+        try {
+          const user = await User.findOne({ mail, password });
+          if (user) {
+            res.json({ ...user.toObject(), token: tokenize(user.toObject()) });
+          } else {
+            res.json({ erro: "Dados de login não conferem" });
+          }
+        } catch (e: any) {
+          res.status(500).json({ erro: e.message });
+        }
+      }
+    }
+    
     public async create(req: Request, res: Response): Promise<void> {
-        const { mail, password, profile } = req.body;
+        const { mail, password, status } = req.body;
         if (!mail && !password) {
             res.status(401).json({ erro: "Forneça o e-mail e senha" });
         }else{
         try {
-            const response = await User.create({ mail, password, profile });
+            const response = await User.create({ mail, password, status });
             res.send(response);
         } catch (e: any) {
                 res.send({ message: e });
@@ -17,27 +37,6 @@ class UserController {
         }
     }
 
-    public async login(req: Request, res: Response) {
-        const { mail, password } = req.body;
-
-        
-
-        const user = await User.findOne({
-            mail
-        });
-
-        if (!user) {
-            return res.status(401).json({ message: 'Email não encontrado.' });
-        }
-        console.log("Email", user);
-       
-        if (!password) {
-            return res.status(401).json({ message: 'Senha incorreta.' });
-        }
-
-        const token = jwt.sign({ userId: user._id }, 'token', { expiresIn: '1h' });
-        res.status(200).json({ message: 'Logado com sucesso.', user, token })
-    }
 
     public async list(_: Request, res: Response): Promise<void> {
         res.send(await User.find(

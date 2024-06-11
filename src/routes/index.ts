@@ -5,11 +5,11 @@ import user from "./user"
 import spents from "./spents"
 import { validadeAcess } from "../middlewares/Auth";
 
-const router = Router()
+const routes = Router()
 
-router.use("/categoria", validadeAcess, category)
-router.use("/produto", validadeAcess, products)
-router.use("/usuario", user)
-router.use("/gasto", validadeAcess, spents)
+routes.use("/usuario", user);
+routes.use("/categoria", validadeAcess, category);
+routes.use("/produto", validadeAcess, products);
+routes.use("/gasto", validadeAcess, spents);
 
-export default router
+export default routes

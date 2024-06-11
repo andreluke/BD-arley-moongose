@@ -9,7 +9,7 @@ const SpentsSchema = new Schema({
         required: [true, "O usuário é obrigatório"],
         validate:{
             validator: async function(_id:ObjectId) {
-                const document = await mongoose.models.Category.findById(_id);
+                const document = await mongoose.models.User.findById(_id);
                 return !!document;
             },
             message:"O usuário não existe no cadastro"
@@ -21,18 +21,18 @@ const SpentsSchema = new Schema({
         required: [true, "O usuário é obrigatório"],
         validate:{
             validator: async function(_id:ObjectId) {
-                const document = await mongoose.models.Category.findById(_id);
+                const document = await mongoose.models.Products.findById(_id);
                 return !!document;
             },
             message:"O usuário não existe no cadastro"
-        }
+        },
     }, datetime:{
         type: Date
     },
     value:{
         type: Number,
         required: true,
-    }
+    },
 },{
     toJSON: {
         transform: function(doc,ret,options){
