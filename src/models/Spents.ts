@@ -5,7 +5,7 @@ import Products from "./Products"
 const SpentsSchema = new Schema({
     iduser: {
         type: Types.ObjectId,
-        ref: User,
+        ref: 'User',
         required: [true, "O usuário é obrigatório"],
         validate:{
             validator: async function(_id:ObjectId) {
@@ -17,7 +17,7 @@ const SpentsSchema = new Schema({
     }, 
     idproduct: {
         type: Types.ObjectId,
-        ref: Products,
+        ref: 'Products',
         required: [true, "O usuário é obrigatório"],
         validate:{
             validator: async function(_id:ObjectId) {
