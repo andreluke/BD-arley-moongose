@@ -11,7 +11,7 @@ const ProductsSchema = new Schema({
     },
     idcategory: {
         type: Types.ObjectId,
-        ref: Category,
+        ref: 'Category',
         required: [true, "A categoria é obrigatória"],
         validate:{
             validator: async function(_id:ObjectId) {
